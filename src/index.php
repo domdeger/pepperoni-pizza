@@ -1,3 +1,10 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script src="/pepperoni-pizza/jquery.js"></script>
+    <script src="/pepperoni-pizza/ractive.js"></script>
+</head>
+<body>
 <?php
 /**
  * @package    Pepperoni.Pizza
@@ -16,7 +23,7 @@ define('BASEPATH', __DIR__);
 // Installation check
 if ( file_exists(BASEPATH . '/data/config.inc.php') )
 {
-	include_once BASEPATH . '/data/config.inc.php';
+    include_once BASEPATH . '/data/config.inc.php';
 }
 
 // Check that the config is legit and we didn't include an empty file
@@ -35,21 +42,23 @@ if ( file_exists(BASEPATH . '/data/config.inc.php') )
 // Run the website
 else
 { */
-	//Dummy startup will propably change
-    if(!isset($_GET['c']) || !isset($_GET['a'])) {
-        die('Invalid parameters.');
-    }
-    $controllerName = strtolower($_GET['c']);
-    $actionName = strtolower($_GET['a']);
+//Dummy startup will propably change
+if(!isset($_GET['c']) || !isset($_GET['a'])) {
+    die('Invalid parameters.');
+}
+$controllerName = ucfirst(strtolower($_GET['c']));
+$actionName = ucfirst(strtolower($_GET['a']));
 
 
-    $controller_dir = BASEPATH . '/controller/';
-    $controllerName = $controllerName . 'Controller';
+$controller_dir = BASEPATH . '/controller/';
+$controllerName = $controllerName . 'Controller';
 
-    invokeControllerAction($controllerName,$actionName,$controller_dir);
+invokeControllerAction($controllerName,$actionName,$controller_dir);
 
 //}
-
+/*
+Function which dynamically invokes the requested action of a controller.
+*/
 function invokeControllerAction($controllerClassName, $actionName, $controllerBaseFolder) {
     $controllerClassAbsolutePath = $controllerBaseFolder . $controllerClassName . '.php';
     if(file_exists($controllerClassAbsolutePath)) {
@@ -64,3 +73,7 @@ function invokeControllerAction($controllerClassName, $actionName, $controllerBa
     }
 }
 ?>
+
+</body>
+</html>
+

@@ -2,12 +2,12 @@
 
 class ShoutBoxMessageEntity
 {
-	public $Id
+	public $Id;
 
 	public $AuthorUserId;
-	public $TimeStamp
+	public $TimeStamp;
 
-	public $Content
+	public $Content;
 }
 
 ?>
