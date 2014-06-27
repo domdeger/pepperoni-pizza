@@ -1,11 +1,15 @@
 <?php
 
-class ShoutboxController implements IApplicationEntryPoint
+class shoutboxController
 {
 	public function Execute()
 	{
 		die('Not Implemented!');
 	}
+
+    public  function  index() {
+        echo "HALLOOOOO !";
+    }
 }
 
 ?>

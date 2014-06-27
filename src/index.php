@@ -20,7 +20,7 @@ if ( file_exists(BASEPATH . '/data/config.inc.php') )
 }
 
 // Check that the config is legit and we didn't include an empty file
-if(!defined('INSTALL_COMPLETE'))	
+/* if(!defined('INSTALL_COMPLETE'))
 {
 	if (file_exists(BASEPATH . '/install/index.php'))
 	{
@@ -34,12 +34,33 @@ if(!defined('INSTALL_COMPLETE'))
 }
 // Run the website
 else
-{
+{ */
 	//Dummy startup will propably change
-	require_once BASEPATH . '/controller/ShoutBoxController.php';
+    if(!isset($_GET['c']) || !isset($_GET['a'])) {
+        die('Invalid parameters.');
+    }
+    $controllerName = strtolower($_GET['c']);
+    $actionName = strtolower($_GET['a']);
 
-	$controller = new ShoutBoxController();
-	$controller->Index();
+
+    $controller_dir = BASEPATH . '/controller/';
+    $controllerName = $controllerName . 'Controller';
+
+    invokeControllerAction($controllerName,$actionName,$controller_dir);
+
+//}
+
+function invokeControllerAction($controllerClassName, $actionName, $controllerBaseFolder) {
+    $controllerClassAbsolutePath = $controllerBaseFolder . $controllerClassName . '.php';
+    if(file_exists($controllerClassAbsolutePath)) {
+        require_once $controllerClassAbsolutePath;
+        $classMethods = get_class_methods($controllerClassName);
+
+        if(array_search($actionName,$classMethods)) {
+            $controller = new $controllerClassName();
+            return $controller->$actionName();
+        }
+        die('Requested page not found.');
+    }
 }
-
 ?>
