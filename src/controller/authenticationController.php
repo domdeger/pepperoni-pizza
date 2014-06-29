@@ -2,10 +2,9 @@
 class AuthenticationController {
 
     public  function Login() {
-        if(!isset($_POST['username']) || isset($_POST['password'])) {
+        if(!isset($_POST['username']) || !isset($_POST['password'])) {
             die('Set required parameters.');
         }
-
         $name = $_POST['username'];
         $pw = $_POST['password'];
 
@@ -15,7 +14,7 @@ class AuthenticationController {
 
             $_SESSION['User'] = $user;
 
-            return http_redirect("/shoutbox/view");
+            return header("Location: /pepperoni-pizza/shoutbox/view");
         }
     }
 

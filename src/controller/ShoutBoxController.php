@@ -1,12 +1,14 @@
 <?php
-
+include_once "/internal/controllerResponse.php";
 class ShoutboxController
 {
 
     public  function  Login() {
-        echo '
-                    <!-- Default home page -->
-            <form method="POST" action="/Authentication/Login">
+        $resp = new \internal\controllerResponse();
+
+        $resp->ResponseContent =
+        '
+            <form method="POST" action="/pepperoni-pizza/Authentication/Login">
                <label for="username">Username</label>
                 <input type="text" name="username" />
                 <label for="password">Password</label>
@@ -14,14 +16,18 @@ class ShoutboxController
                 <input type="submit" value="Login" />
             </form>
 
-            <a href="/Authentication/Register">
+            <a href="/pepperoni-pizza/Authentication/Register">
                 Register a free account !
             </a>
         ';
+
+        return $resp;
     }
 
     public  function Register() {
-        echo '<form id="regacc">
+        $resp = new \internal\controllerResponse();
+
+        $resp->ResponseContent = '<form id="regacc">
     <input type="text" name="username" />
     <input type="password" name="password" />
     <input type="submit" value="Register!" />
@@ -47,14 +53,19 @@ class ShoutboxController
             });
     });
     </script>';
+        return $resp;
     }
 
     public function View() {
-        if(!isset($_SESSION['User'])) {
 
+        if(!isset($_SESSION['User'])) {
+            header('Location: /pepperoni-pizza/shoutbox/login');
+            die();
         }
 
-        echo '<div id="shoutContainer">
+        $resp = new \internal\controllerResponse();
+
+        $resp->ResponseContent = '<div id="shoutContainer">
 
             </div>
 
@@ -198,6 +209,7 @@ class ShoutboxController
                 });
 
             </script>';
+        return $resp;
     }
 }
 

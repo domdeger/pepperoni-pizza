@@ -1,10 +1,4 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <script src="/pepperoni-pizza/jquery.js"></script>
-    <script src="/pepperoni-pizza/ractive.js"></script>
-</head>
-<body>
+
 <?php
 /**
  * @package    Pepperoni.Pizza
@@ -19,7 +13,7 @@ ini_set("display_errors", 1);
 //####################################
 
 define('BASEPATH', __DIR__);
-
+session_start();
 // Installation check
 if ( file_exists(BASEPATH . '/data/config.inc.php') )
 {
@@ -53,7 +47,20 @@ $actionName = ucfirst(strtolower($_GET['a']));
 $controller_dir = BASEPATH . '/controller/';
 $controllerName = $controllerName . 'Controller';
 
-invokeControllerAction($controllerName,$actionName,$controller_dir);
+$response = invokeControllerAction($controllerName,$actionName,$controller_dir);
+if($response != null) {
+    if($response->UseMasterPage) {
+        ob_start();
+        include "master.html";
+        $masterPage = ob_get_clean();
+        $response->ResponseContent = str_replace('<:content />',$response->ResponseContent, $masterPage);
+    }
+
+    header('Content-type: '. $response->ContentType);
+
+    echo($response->ResponseContent);
+}
+
 
 //}
 /*
@@ -64,8 +71,7 @@ function invokeControllerAction($controllerClassName, $actionName, $controllerBa
     if(file_exists($controllerClassAbsolutePath)) {
         require_once $controllerClassAbsolutePath;
         $classMethods = get_class_methods($controllerClassName);
-
-        if(array_search($actionName,$classMethods)) {
+        if(array_search($actionName,$classMethods) !== false) {
             $controller = new $controllerClassName();
             return $controller->$actionName();
         }
@@ -74,6 +80,4 @@ function invokeControllerAction($controllerClassName, $actionName, $controllerBa
 }
 ?>
 
-</body>
-</html>
 

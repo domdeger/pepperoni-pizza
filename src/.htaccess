@@ -2,6 +2,6 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteBase /
+RewriteBase /pepperoni-pizza
 RewriteRule ^([A-Za-z]*)/([A-Za-z]*)$ index.php?c=$1&a=$2 [L]
 RewriteRule ^$ index.php?c=shoutbox&a=view [L]
