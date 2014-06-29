@@ -48,6 +48,7 @@ $controller_dir = BASEPATH . '/controller/';
 $controllerName = $controllerName . 'Controller';
 
 $response = invokeControllerAction($controllerName,$actionName,$controller_dir);
+
 if($response != null) {
     if($response->UseMasterPage) {
         ob_start();

@@ -2,7 +2,6 @@
 include_once "/internal/controllerResponse.php";
 class ShoutboxController
 {
-
     public  function  Login() {
         $resp = new \internal\controllerResponse();
 
@@ -42,7 +41,7 @@ class ShoutboxController
                 var userForm = $(event.target).serialize();
 
                 $.ajax({
-                   url:"/Auth/Register",
+                   url:"/pepperoni-pizza/Authentication/Register",
                    method: "POST",
                    data: userForm
                 }).success(function() {
@@ -70,28 +69,35 @@ class ShoutboxController
             </div>
 
             <script id="shoutTmpl" type="text/ractive">
-                <div on-mousewheel="scrollMsg" data-page="{{page}}" data-pagesize={{pageSize}} id="messages" style="border: 1px solid black; overflow-y: scroll; max-height: 400px; min-height: 400px;">
+            <div class="panel panel-default">
+              <div class="panel-heading">Pepperoni-Pizza Chat</div>
+              <div class="panel-body">
+                 <div on-mousewheel="scrollMsg" data-page="{{page}}" data-pagesize={{pageSize}} id="messages" style="border: 1px solid black; overflow-y: scroll; max-height: 400px; min-height: 400px;">
                 {{#shouts}}
-                    <strong>{{sentDate}} {{sentTime}} {{Owner.Username}} </strong>
-                    <p on-mousewheel="return false;">
+                    <strong>{{sentDate}} {{sentTime}} {{Owner.Username}} </strong> </br>
+                    <div style="display: inline-block; overflow-wrap: break-word; max-width: 50%;" class="alert alert-info" on-mousewheel="return false;">
                         {{MessageText}}
                         {{#isOwner}}
                             <img data-messageId="{{id}}" on-click="deleteMsg" src="/images/delete.png" style="width: 15px; height: 15px;" />
                         {{/isOwner}}
-                    </p>
+                    </div>
                 {{/shouts}}
                 </div>
                 <form>
-                    <input style="width: 30%" type="text" name="msg" value={{message}} />
-                    <input type="submit" on-click="sendmsg"/>
+                    <input class="form-control" style="width: 30%" type="text" name="msg" value={{message}} />
+                    <button class="btn btn-default" on-click="sendmsg">Send Message</button>
                 </form>
+                <a href="#" id="export">Export my messages !</a>
+              </div>
+            </div>
+
             </script>
 
             <script type="text/javascript">
                 $(document).ready(function() {
                     $.ajax({
-                       url:"/Shout/read",
-                       method: "GET",
+                       url:"/pepperoni-pizza/Shoutboxapi/read",
+                       type: "GET",
                        data: {page: 1, pagesize : 10}
                     }).done(function(shouts) {
 
@@ -131,7 +137,7 @@ class ShoutboxController
                             var page = $("#messages").attr("data-page");
                             var pageSize = $("#messages").attr("data-pagesize");
                             $.ajax({
-                                url:"/Shout/read",
+                                url:"/pepperoni-pizza/Shoutboxapi/read",
                                 method: "GET",
                                 data: {page: 1, pagesize: (page * pageSize)}
                             }).done(function(shouts) {
@@ -162,7 +168,7 @@ class ShoutboxController
                                     .preventDefault();
                             var message = ractive.get("message");
                             $.ajax({
-                                url:"/Shout/create",
+                                url:"/pepperoni-pizza/Shoutboxapi/create",
                                 method: "POST",
                                 data: {msg: message}
                             }).done(function(res) {
